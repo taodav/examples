@@ -68,7 +68,7 @@ def finish_episode():
     for log_prob, reward in zip(policy.saved_log_probs, rewards):
         policy_loss.append(-log_prob * reward)
     optimizer.zero_grad()
-    policy_loss = torch.cat(policy_loss).sum()
+    policy_loss = torch.stack(policy_loss, dim=0).sum()
     policy_loss.backward()
     optimizer.step()
     del policy.rewards[:]
